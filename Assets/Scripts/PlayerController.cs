@@ -13,7 +13,7 @@ public class PlayerController : MonoBehaviour
     private BoxCollider2D boxCollider2D;
 
     public LayerMask whatIsGround;
-    
+
     void Start()
     {
         rb = gameObject.GetComponent<Rigidbody2D>();
@@ -22,6 +22,11 @@ public class PlayerController : MonoBehaviour
 
     void Update()
     {
+        if (!GameManager.instance.isInGame)
+        {
+            return;
+        }
+
         if (IsGrounded() && Time.time >= timestamp)
         {
             if (jumped || doubleJumped)
@@ -58,5 +63,19 @@ public class PlayerController : MonoBehaviour
         RaycastHit2D hit = Physics2D.BoxCast(boxCollider2D.bounds.center, boxCollider2D.bounds.size, 0f, Vector2.down, 0.1f, whatIsGround);
 
         return hit.collider != null;
+    }
+
+    void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (collision.CompareTag("Obstacle"))
+        {
+            HandlePlayerDeath();
+        }
+    }
+
+    void HandlePlayerDeath()
+    {
+        GetComponent<Rigidbody2D>().constraints = RigidbodyConstraints2D.FreezeAll;
+        GameManager.instance.HandleGameOver();
     }
 }

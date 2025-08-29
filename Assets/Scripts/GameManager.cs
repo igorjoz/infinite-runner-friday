@@ -11,6 +11,13 @@ public class GameManager : MonoBehaviour
 
     public bool isInGame;
     public GameObject resetButton;
+    private int coins;
+
+    public void CoinCollected(int value = 1)
+    {
+        coins += value;
+        PlayerPrefs.SetInt("Coins", coins);
+    }
 
     void Start()
     {

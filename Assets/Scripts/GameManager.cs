@@ -15,6 +15,9 @@ public class GameManager : MonoBehaviour
     public TMP_Text coinsText;
     private int coins;
 
+    public Immortality immortality;
+    public Magnet magnet;
+
     public void CoinCollected(int value = 1)
     {
         coins += value;
@@ -34,6 +37,8 @@ public class GameManager : MonoBehaviour
     void InitializeGame()
     {
         isInGame = true;
+        immortality.isActive = false;
+        magnet.isActive = false;
 
         if (PlayerPrefs.HasKey("Coins"))
         {
@@ -44,6 +49,41 @@ public class GameManager : MonoBehaviour
             coins = 0;
             PlayerPrefs.SetInt("Coins", 0);
         }
+    }
+
+    public void ImmortalityCollected()
+    {
+        if (immortality.isActive)
+        {
+            CancelInvoke("CancelImmortality");
+            CancelImmortality();
+        }
+
+        immortality.isActive = true;
+        worldScrollingSpeed += immortality.GetSpeedBoost();
+        Invoke("CancelImmortality", immortality.GetDuration());
+    }
+
+    void CancelImmortality()
+    {
+        worldScrollingSpeed -= immortality.GetSpeedBoost();
+        immortality.isActive = false;
+    }
+
+    public void MagnetCollected()
+    {
+        if (magnet.isActive)
+        {
+            CancelInvoke("CancelMagnet");
+        }
+
+        magnet.isActive = true;
+        Invoke("CancelMagnet", magnet.GetDuration());
+    }
+
+    public void CancelMagent()
+    {
+        magnet.isActive = false;
     }
 
     void FixedUpdate()

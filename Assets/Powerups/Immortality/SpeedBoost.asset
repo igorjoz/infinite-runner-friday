@@ -9,9 +9,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 64af02545bcc9404f907b64f1f181cd8, type: 3}
-  m_Name: Immortality
-  m_EditorClassIdentifier: 
-  isActive: 0
-  duration: {fileID: 0}
-  speedBoost: {fileID: 0}
+  m_Script: {fileID: 11500000, guid: 86462ddcd7c94694c846d6cc0be5dacf, type: 3}
+  m_Name: SpeedBoost
+  m_EditorClassIdentifier: Assembly-CSharp::PowerupStats
+  value: 0.1

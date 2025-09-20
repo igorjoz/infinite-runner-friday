@@ -15,11 +15,11 @@ public class MenuManager : MonoBehaviour
     public GameObject mainMenuPanel;
     public GameObject upgradesStorePanel;
 
-    public TextMeshProUGUI magnetLevelText;
-    public TextMeshProUGUI magnetButtonText;
+    public Text magnetLevelText;
+    public Text magnetButtonText;
 
-    public TextMeshProUGUI immortalityLevelText;
-    public TextMeshProUGUI immortalityButtonText;
+    public Text immortalityLevelText;
+    public Text immortalityButtonText;
 
     public Powerup magnet;
     public Powerup immortality;
@@ -53,6 +53,12 @@ public class MenuManager : MonoBehaviour
         {
             soundButtonText.text = "Music OFF";
         }
+
+        immortalityLevelText.text = immortality.ToString();
+        immortalityButtonText.text = immortality.UpgradeCostString();
+
+        magnetLevelText.text = magnet.ToString();
+        magnetButtonText.text = magnet.UpgradeCostString();
     }
 
     public void PlayButtonClicked()
@@ -64,6 +70,42 @@ public class MenuManager : MonoBehaviour
     {
         SoundManager.instance.ToggleMuted();
         UpdateUI();
+    }
+
+    public void OpenUpgradesStore()
+    {
+        mainMenuPanel.SetActive(false);
+        upgradesStorePanel.SetActive(true);
+    }
+
+    public void CloseUpgradesStore()
+    {
+        mainMenuPanel.SetActive(true);
+        upgradesStorePanel.SetActive(false);
+    }
+
+    public void UpgradeImmortalityButton()
+    {
+        UpgradePowerup(immortality);
+    }
+
+    public void UpgradeMagnetButton()
+    {
+        UpgradePowerup(magnet);
+    }
+    private void UpgradePowerup(Powerup powerup)
+    {
+        if (coins >= powerup.GetNextUpgradeCost() && !powerup.IsMaxedOut())
+        {
+            ReduceCoinsAmount(powerup.GetNextUpgradeCost());
+            powerup.Upgrade();
+            UpdateUI();
+        }
+    }
+    private void ReduceCoinsAmount(int amount)
+    {
+        coins -= amount;
+        PlayerPrefs.SetInt("Coins", coins);
     }
 
 

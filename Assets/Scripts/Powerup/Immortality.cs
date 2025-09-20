@@ -6,9 +6,5 @@ public class Immortality : Powerup
 {
     [SerializeField]
     private PowerupStats speedBoost;
-
-    public float GetSpeedBoost()
-    {
-        return speedBoost.GetValue();
-    }
+    public float GetSpeedBoost() { return speedBoost.GetValue(currentLevel); }
 }
